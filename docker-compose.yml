@@ -39,7 +39,6 @@ services:
       - NATS_SERVERS=nats://nats-server:4222
       - DATABASE_URL=file:./dev.db
 
-  
   # Orders MS
   orders-ms:
     build: ./orders-ms
@@ -59,7 +58,7 @@ services:
     image: postgres:16.2
     restart: always
     volumes:
-      - ./orders-ms/postgres:/var/lib/postgresql/data
+      - ./orders-ms/src/postgres:/var/lib/postgresql/data
     ports:
       - 5433:5432
     environment:
@@ -81,3 +80,15 @@ services:
       - STRIPE_CANCEL_URL=${STRIPE_CANCEL_URL}
       - STRIPE_SUCCESS_URL=${STRIPE_SUCCESS_URL}
       - STRIPE_ENDPOINTSECRET=${STRIPE_ENDPOINTSECRET}
+
+
+  auth-ms:
+    build: ./auth-ms
+    volumes:
+      - ./auth-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3004
+      - NATS_SERVERS=nats://nats-server:4222
+      - DATABASE_URL=${AUTH_MS_DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}

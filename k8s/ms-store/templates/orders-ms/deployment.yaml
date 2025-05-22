@@ -1,0 +1,38 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: orders-ms
+  name: orders-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders-ms
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: orders-ms
+    spec:
+      containers:
+        - image: us-east1-docker.pkg.dev/ms-store-459001/ms-store-registry/orders-ms
+          name: orders-ms
+          env:
+            - name: PORT
+              value: "3002"
+            - name: NATS_SERVERS
+              value: "nats://nats"
+            - name: PRODUCTS_MICROSERVICE_HOST
+              value: localhost
+            - name: PRODUCTS_MICROSERVICE_PORT
+              value: "3001"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: orders-secrets
+                  key: database_url
+          resources: {}
+status: {}

@@ -47,5 +47,6 @@ Si se hace al revés, se perderán las referencias de los sub-módulos en el rep
 
 1. Clonar repo
 ```
-docker compose -f docker-compose.prod.yml build
+1- docker compose -f docker-compose.prod.yml build
+2- docker compose -f docker-compose.prod.yml up
 ```
